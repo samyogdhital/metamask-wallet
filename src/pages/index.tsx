@@ -1,4 +1,7 @@
 import React from 'react';
+import { ModalProps } from 'react-bootstrap';
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
 
 const checkInt = (num: number) => Number.isInteger(num);
 const conversionRate = 3;
@@ -8,8 +11,11 @@ export default function Home() {
   const [swap, setSwap] = React.useState(false);
   const busd = nep * conversionRate;
 
+  const [walletToggle, setWalletToggle] = React.useState(false);
+
   return (
-    <div>
+    <div className=''>
+      <Wallet show={walletToggle} onHide={() => setWalletToggle(false)} />
       {!swap ? (
         <>
           <Input
@@ -55,6 +61,12 @@ export default function Home() {
           />
         </>
       )}
+
+      <br />
+      <br />
+      <button onClick={() => setWalletToggle((pre) => !pre)}>
+        Connect to wallet
+      </button>
     </div>
   );
 }
@@ -74,5 +86,24 @@ function Input(
       <label htmlFor={id}>{label}</label>
       <input id={id} {...rest} />
     </>
+  );
+}
+
+function Wallet(props: ModalProps) {
+  return (
+    <Modal
+      {...props}
+      size='sm'
+      aria-labelledby='contained-modal-title-vcenter'
+      centered
+    >
+      <Modal.Body className='text-danger'>
+        <h4 className='text-center'>Connect to MetaMask</h4>
+        <p className='text-center'>Are you sure you want to connect ?</p>
+      </Modal.Body>
+      <Modal.Footer>
+        <Button onClick={props.onHide}>Connect</Button>
+      </Modal.Footer>
+    </Modal>
   );
 }
