@@ -3,39 +3,59 @@ import React from 'react';
 import { ModalProps } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
+import type { BigNumber } from '@ethersproject/bignumber';
+import { formatEther } from '@ethersproject/units';
+import type { Web3ReactHooks } from '@web3-react/core';
+import { useState } from 'react';
 
-const checkInt = (num: number) => Number.isInteger(num);
-const conversionRate = 3;
+const checkInt = (num: number): boolean => Number.isInteger(num);
+const conversionRate: number = 3;
 
 export default function Home() {
-  const [nep, setNep] = React.useState(0);
-  const [swap, setSwap] = React.useState(false);
-  const busd = nep * conversionRate;
+  const [nep, setNep] = React.useState<number>(0);
+  const [swap, setSwap] = React.useState<Boolean>(false);
+  const busd: number = nep * conversionRate;
 
-  const [walletToggle, setWalletToggle] = React.useState(false);
+  const [walletToggle, setWalletToggle] = React.useState<boolean>(false);
+  const [ethErr, setEthErr] = React.useState<string | null>(null);
+  const [showWallet, setShowWallet] = React.useState<boolean>(false);
 
   const {
     useChainId,
     useAccounts,
-    useIsActivating,
-    useIsActive,
     useProvider,
     useENSNames,
+    useIsActivating,
+    useIsActive,
   } = hooks;
 
   const chainId = useChainId();
-
-  console.log({ chainId });
+  const accounts = useAccounts();
+  const provider = useProvider();
+  const ENSNames = useENSNames(provider);
+  const activating = useIsActivating();
+  const active = useIsActive();
 
   React.useEffect(() => {
-    metaMask.connectEagerly().catch(() => {
-      console.debug('Failed to connect eagerly to metamask');
-    });
-  }, []);
+    if (accounts && accounts.length) {
+      setEthErr(null);
+      if (!active) {
+        metaMask.connectEagerly();
+      }
+    }
+  }, [accounts?.length]);
 
   return (
     <div className=''>
-      <Wallet show={walletToggle} onHide={() => setWalletToggle(false)} />
+      <Wallet
+        show={walletToggle}
+        onExit={() => {
+          metaMask.activate().catch(() => {
+            setEthErr('Error While Connecting');
+          });
+        }}
+        onHide={() => setWalletToggle(false)}
+      />
       {!swap ? (
         <>
           <Input
@@ -81,25 +101,25 @@ export default function Home() {
           />
         </>
       )}
-
       <br />
       <br />
-      {/* <button onClick={() => setWalletToggle((pre) => !pre)}> */}
       <button
         onClick={() => {
-          //connect wallet here
-          if (chainId) {
-            console.log(metaMask, 'disconnect');
-            metaMask.actions.resetState();
+          if (active) {
+            metaMask.resetState();
           } else {
-            metaMask.activate();
+            setWalletToggle(true);
           }
         }}
       >
-        {chainId ? 'Disconnect' : 'Check Wallet Details'}
+        {active
+          ? 'Disconnect'
+          : activating
+          ? 'Connecting...'
+          : 'Check Wallet Details'}
       </button>
-
-      {/* <div>Chain Here; Eg: Polygon Mumbai</div> */}
+      {ethErr && ethErr}
+      <Accounts accounts={accounts} provider={provider} ENSNames={ENSNames} />
     </div>
   );
 }
@@ -138,5 +158,70 @@ function Wallet(props: ModalProps) {
         <Button onClick={props.onHide}>Connect</Button>
       </Modal.Footer>
     </Modal>
+  );
+}
+
+function useBalances(
+  provider?: ReturnType<Web3ReactHooks['useProvider']>,
+  accounts?: string[]
+): BigNumber[] | undefined {
+  const [balances, setBalances] = useState<BigNumber[] | undefined>();
+
+  React.useEffect(() => {
+    if (provider && accounts?.length) {
+      let stale = false;
+
+      void Promise.all(
+        accounts.map((account) => provider.getBalance(account))
+      ).then((balances) => {
+        if (stale) return;
+        setBalances(balances);
+      });
+
+      return () => {
+        stale = true;
+        setBalances(undefined);
+      };
+    }
+  }, [provider, accounts]);
+
+  return balances;
+}
+
+function Accounts({
+  accounts,
+  provider,
+  ENSNames,
+}: {
+  accounts: ReturnType<Web3ReactHooks['useAccounts']>;
+  provider: ReturnType<Web3ReactHooks['useProvider']>;
+  ENSNames: ReturnType<Web3ReactHooks['useENSNames']>;
+}) {
+  const balances = useBalances(provider, accounts);
+  if (!accounts) return null;
+
+  return (
+    <div>
+      <b>
+        {!accounts.length
+          ? 'None'
+          : accounts.map((account, i) => (
+              <ul
+                key={account}
+                style={{
+                  margin: 0,
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                }}
+              >
+                {ENSNames?.[i] ?? account}
+                <br />
+                {balances && balances[i]
+                  ? `Balance: (Ξ${formatEther(balances[i])})`
+                  : null}
+              </ul>
+            ))}
+      </b>
+    </div>
   );
 }
