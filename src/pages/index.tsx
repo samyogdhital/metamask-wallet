@@ -1,3 +1,4 @@
+import { hooks, metaMask } from '@/utils/metamask';
 import React from 'react';
 import { ModalProps } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
@@ -12,6 +13,25 @@ export default function Home() {
   const busd = nep * conversionRate;
 
   const [walletToggle, setWalletToggle] = React.useState(false);
+
+  const {
+    useChainId,
+    useAccounts,
+    useIsActivating,
+    useIsActive,
+    useProvider,
+    useENSNames,
+  } = hooks;
+
+  const chainId = useChainId();
+
+  console.log({ chainId });
+
+  React.useEffect(() => {
+    metaMask.connectEagerly().catch(() => {
+      console.debug('Failed to connect eagerly to metamask');
+    });
+  }, []);
 
   return (
     <div className=''>
@@ -64,9 +84,22 @@ export default function Home() {
 
       <br />
       <br />
-      <button onClick={() => setWalletToggle((pre) => !pre)}>
-        Connect to wallet
+      {/* <button onClick={() => setWalletToggle((pre) => !pre)}> */}
+      <button
+        onClick={() => {
+          //connect wallet here
+          if (chainId) {
+            console.log(metaMask, 'disconnect');
+            metaMask.actions.resetState();
+          } else {
+            metaMask.activate();
+          }
+        }}
+      >
+        {chainId ? 'Disconnect' : 'Check Wallet Details'}
       </button>
+
+      {/* <div>Chain Here; Eg: Polygon Mumbai</div> */}
     </div>
   );
 }
