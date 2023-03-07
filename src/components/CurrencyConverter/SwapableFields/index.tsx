@@ -27,7 +27,7 @@ const SwapableFields = () => {
             label="Nep"
             onChange={(e) => setNep(parseInt(e.target.value))}
             value={checkInt(nep) ? nep : nep.toFixed(2)}
-            aria-ddescribedby="nep input"
+            aria-describedby="nep input"
           />
           <SwapIcon setSwap={setSwap} animate="animate" variants={varients} />
           <Input
@@ -39,7 +39,7 @@ const SwapableFields = () => {
             onChange={(e) =>
               setNep(parseInt(e.target.value) / CURRENCY_CONVERSION_RATE)
             }
-            aria-ddescribedby="busd input"
+            aria-describedby="busd input"
           />
         </>
       ) : (
@@ -53,7 +53,7 @@ const SwapableFields = () => {
             onChange={(e) =>
               setNep(parseInt(e.target.value) / CURRENCY_CONVERSION_RATE)
             }
-            aria-ddescribedby="busd input"
+            aria-describedby="busd input"
           />
           <SwapIcon setSwap={setSwap} />
           <Input
@@ -63,7 +63,7 @@ const SwapableFields = () => {
             label="Nep"
             onChange={(e) => setNep(parseInt(e.target.value))}
             value={checkInt(nep) ? nep : nep.toFixed(2)}
-            aria-ddescribedby="nep input"
+            aria-describedby="nep input"
           />
         </>
       )}

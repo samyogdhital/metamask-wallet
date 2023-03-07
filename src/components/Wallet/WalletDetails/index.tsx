@@ -10,8 +10,8 @@ type Props = {
 };
 
 const WalletDetails = ({ accounts, provider }: Props) => {
+  const balances = useBalances(provider, accounts || []);
   if (!accounts) return null;
-  const balances = useBalances(provider, accounts);
 
   return (
     <>
