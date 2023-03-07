@@ -1,12 +1,20 @@
-import React from 'react';
 import MetaMaskWallet from '@/components/Wallet';
 import SwapableFields from '@/components/CurrencyConverter/SwapableFields';
 
-export default function Home() {
+const Home = () => {
   return (
-    <>
+    <div
+      style={{
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+      }}
+    >
       <SwapableFields />
       <MetaMaskWallet />
-    </>
+    </div>
   );
-}
+};
+
+export default Home;

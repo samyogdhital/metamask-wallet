@@ -2,11 +2,19 @@ import React from 'react';
 import Input from '@/components/Input';
 import { checkInt } from '@/utils';
 import { CURRENCY_CONVERSION_RATE } from '@/constants';
+import SwapIcon from '@/components/CurrencyConverter/SwapIcon';
 
 const SwapableFields = () => {
   const [swap, setSwap] = React.useState<boolean>(false);
   const [nep, setNep] = React.useState<number>(0);
+
   const busd: number = nep * CURRENCY_CONVERSION_RATE;
+
+  const varients = {
+    animate: {
+      transform: 'rotate(180deg)',
+    },
+  };
 
   return (
     <div>
@@ -20,9 +28,7 @@ const SwapableFields = () => {
             onChange={(e) => setNep(parseInt(e.target.value))}
             value={checkInt(nep) ? nep : nep.toFixed(2)}
           />
-          <br />
-          <div onClick={() => setSwap((pre) => !pre)}>swap</div>
-          <br />
+          <SwapIcon setSwap={setSwap} animate='animate' variants={varients} />
           <Input
             id='busd'
             type='number'
@@ -46,9 +52,7 @@ const SwapableFields = () => {
               setNep(parseInt(e.target.value) / CURRENCY_CONVERSION_RATE)
             }
           />
-          <br />
-          <div onClick={() => setSwap((pre) => !pre)}>swap</div>
-          <br />
+          <SwapIcon setSwap={setSwap} />
           <Input
             id='nep'
             type='number'

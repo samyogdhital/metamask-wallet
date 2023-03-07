@@ -1,8 +1,10 @@
 import React from 'react';
-import ConnectWallet from '@/components/Wallet/ConnectWallet';
+import Button from 'react-bootstrap/Button';
+import Spinner from 'react-bootstrap/Spinner';
 import WalletModal from '@/components/Wallet/WalletModal';
-import { EthErrorType } from '@/types';
+import ConnectWallet from '@/components/Wallet/ConnectWallet';
 import { hooks, metaMask } from '@/utils/metamask';
+import { EthErrorType } from '@/types';
 import { METAMASK_CONNECTION_FAILED, METAMASK_NOT_FOUND } from '@/constants';
 
 const MetaMaskWallet = () => {
@@ -13,19 +15,11 @@ const MetaMaskWallet = () => {
     message: null,
   });
 
-  const {
-    useChainId,
-    useAccounts,
-    useProvider,
-    useENSNames,
-    useIsActivating,
-    useIsActive,
-  } = hooks;
+  const { useAccounts, useProvider, useIsActivating, useIsActive } = hooks;
 
   const accounts = useAccounts();
   const provider = useProvider();
   const activating = useIsActivating();
-  const active = useIsActive();
 
   React.useEffect(() => {
     if (!window.ethereum) {
@@ -67,15 +61,14 @@ const MetaMaskWallet = () => {
         accounts={accounts}
         provider={provider}
       />
-      <button
+      <Button
         onClick={() => setConfirmConnect(true)}
         disabled={ethErr.type === 'METAMASK_NOT_FOUND'}
       >
-        {activating ? 'Connecting...' : 'Check Wallet Details'}
-      </button>
+        {activating ? <Spinner /> : 'Check Wallet Details'}
+      </Button>
       <div>{ethErr.type && ethErr.message}</div>
     </div>
   );
 };
-
 export default MetaMaskWallet;
