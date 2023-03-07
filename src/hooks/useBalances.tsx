@@ -1,9 +1,9 @@
-import { ProviderType, UseBalanceType } from '@/types';
 import React from 'react';
+import { ProviderType, UseBalanceType } from '@/types';
 
 export const useBalances = (
   provider: ProviderType,
-  accounts: string[]
+  accounts: string[],
 ): UseBalanceType => {
   const [balances, setBalances] = React.useState<UseBalanceType>();
 
@@ -12,7 +12,7 @@ export const useBalances = (
       let stale = false;
 
       void Promise.all(
-        accounts.map((account) => provider.getBalance(account))
+        accounts.map((account) => provider.getBalance(account)),
       ).then((balances) => {
         if (stale) return;
         setBalances(balances);

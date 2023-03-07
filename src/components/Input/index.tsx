@@ -1,6 +1,6 @@
 import React from 'react';
-import Form from 'react-bootstrap/Form';
 import { FormControlProps } from 'react-bootstrap';
+import Form from 'react-bootstrap/Form';
 
 type InputLabelProps = {
   label: string;

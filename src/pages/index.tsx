@@ -1,5 +1,5 @@
-import MetaMaskWallet from '@/components/Wallet';
 import SwapableFields from '@/components/CurrencyConverter/SwapableFields';
+import MetaMaskWallet from '@/components/Wallet';
 
 const Home = () => {
   return (

@@ -1,11 +1,11 @@
 import React from 'react';
 import Button from 'react-bootstrap/Button';
 import Spinner from 'react-bootstrap/Spinner';
-import WalletModal from '@/components/Wallet/WalletModal';
 import ConnectWallet from '@/components/Wallet/ConnectWallet';
-import { hooks, metaMask } from '@/utils/metamask';
-import { EthErrorType } from '@/types';
+import WalletModal from '@/components/Wallet/WalletModal';
 import { METAMASK_CONNECTION_FAILED, METAMASK_NOT_FOUND } from '@/constants';
+import { EthErrorType } from '@/types';
+import { hooks, metaMask } from '@/utils/metamask';
 
 const MetaMaskWallet = () => {
   const [showWallet, setShowWallet] = React.useState<boolean>(false);

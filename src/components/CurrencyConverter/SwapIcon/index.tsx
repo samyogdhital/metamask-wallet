@@ -9,7 +9,7 @@ const SwapIcon = ({
 }) => {
   return (
     <motion.div
-      className='d-flex justify-content-center align-items-center pointer'
+      className="d-flex justify-content-center align-items-center pointer"
       onClick={() => setSwap((pre) => !pre)}
       {...motionProps}
     >

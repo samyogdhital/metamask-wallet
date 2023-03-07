@@ -1,8 +1,8 @@
-import { useBalances } from '@/hooks/useBalances';
-import { metaMask } from '@/utils/metamask';
+import React from 'react';
 import { formatEther } from '@ethersproject/units';
 import { Web3ReactHooks } from '@web3-react/core';
-import React from 'react';
+import { useBalances } from '@/hooks/useBalances';
+import { metaMask } from '@/utils/metamask';
 
 type Props = {
   accounts: ReturnType<Web3ReactHooks['useAccounts']>;

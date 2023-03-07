@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "format": "prettier --write \"**/*.{css,js,json,jsx,ts,tsx}\""
   },
   "dependencies": {
     "@ethersproject/bignumber": "5.6.0",
@@ -19,15 +20,6 @@
     "@web3-react/metamask": "8.1.0-beta.0",
     "@web3-react/types": "8.1.0-beta.0",
     "bootstrap": "^5.2.3",
-    "eslint": "8.35.0",
-    "eslint-config-airbnb": "^19.0.4",
-    "eslint-config-next": "13.2.3",
-    "eslint-config-prettier": "^8.6.0",
-    "eslint-plugin-import": "^2.27.5",
-    "eslint-plugin-jsx-a11y": "^6.7.1",
-    "eslint-plugin-prettier": "^4.2.1",
-    "eslint-plugin-react": "^7.32.2",
-    "eslint-plugin-react-hooks": "^4.6.0",
     "framer-motion": "^10.2.2",
     "next": "13.2.3",
     "react": "18.2.0",
@@ -37,6 +29,16 @@
     "typescript": "4.9.5"
   },
   "devDependencies": {
+    "@trivago/prettier-plugin-sort-imports": "^4.1.1",
+    "eslint": "8.35.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-next": "13.2.3",
+    "eslint-config-prettier": "^8.6.0",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-jsx-a11y": "^6.7.1",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-react": "^7.32.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
     "prettier": "^2.8.4"
   }
 }
