@@ -1,31 +1,22 @@
+import React from 'react';
 import Form from 'react-bootstrap/Form';
+import { FormControlProps } from 'react-bootstrap';
 
-type InputLabelProps = React.DetailedHTMLProps<
-  React.InputHTMLAttributes<HTMLInputElement>,
-  HTMLInputElement
-> & {
+type InputLabelProps = {
   label: string;
   description?: string;
-};
+} & FormControlProps;
 
 const Input = (props: InputLabelProps) => {
-  const { id, label, ...rest } = props;
+  const { id, label, type, ...rest } = props;
 
   return (
     <>
-      {/* <label htmlFor={id}>{label}</label>
-      <input id={id} {...rest} /> */}
       <Form.Label htmlFor={id}>{label}</Form.Label>
-      <Form.Control
-        type='number'
-        id={id}
-        aria-describedby='passwordHelpBlock'
-        {...rest}
-      />
+      <Form.Control type={type} id={id} {...rest} />
       {props.description && (
-        <Form.Text id='passwordHelpBlock' muted>
-          Your password must be 8-20 characters long, contain letters and
-          numbers, and must not contain spaces, special characters, or emoji.
+        <Form.Text id={id} muted>
+          {props.description}
         </Form.Text>
       )}
     </>
