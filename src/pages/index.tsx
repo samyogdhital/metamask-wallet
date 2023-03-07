@@ -7,6 +7,9 @@ import type { BigNumber } from '@ethersproject/bignumber';
 import { formatEther } from '@ethersproject/units';
 import type { Web3ReactHooks } from '@web3-react/core';
 import { useState } from 'react';
+import { EthErrorType } from '@/types';
+import { METAMASK_CONNECTION_FAILED, METAMASK_NOT_FOUND } from '@/constants';
+import WalletDetails from '@/components/WalletDetails';
 
 const checkInt = (num: number): boolean => Number.isInteger(num);
 const conversionRate: number = 3;
@@ -16,8 +19,11 @@ export default function Home() {
   const [swap, setSwap] = React.useState<Boolean>(false);
   const busd: number = nep * conversionRate;
 
-  const [walletToggle, setWalletToggle] = React.useState<boolean>(false);
-  const [ethErr, setEthErr] = React.useState<string | null>(null);
+  const [confirmConnect, setConfirmConnect] = React.useState<boolean>(false);
+  const [ethErr, setEthErr] = React.useState<EthErrorType>({
+    type: null,
+    message: null,
+  });
   const [showWallet, setShowWallet] = React.useState<boolean>(false);
 
   const {
@@ -29,32 +35,43 @@ export default function Home() {
     useIsActive,
   } = hooks;
 
-  const chainId = useChainId();
+  // const chainId = useChainId();
   const accounts = useAccounts();
   const provider = useProvider();
-  const ENSNames = useENSNames(provider);
+  // const ENSNames = useENSNames(provider);
   const activating = useIsActivating();
   const active = useIsActive();
 
   React.useEffect(() => {
+    if (!window.ethereum) {
+      setEthErr({
+        type: METAMASK_NOT_FOUND,
+        message: 'Please install the metamask wallet',
+      });
+    }
+  }, []);
+
+  React.useEffect(() => {
     if (accounts && accounts.length) {
-      setEthErr(null);
-      if (!active) {
-        metaMask.connectEagerly();
-      }
+      setEthErr({ type: null, message: null });
     }
   }, [accounts?.length]);
 
   return (
-    <div className=''>
-      <Wallet
-        show={walletToggle}
-        onExit={() => {
+    <div>
+      <ConnectWallet
+        show={confirmConnect}
+        onHide={() => setConfirmConnect(false)}
+        onConfirm={() => {
           metaMask.activate().catch(() => {
-            setEthErr('Error While Connecting');
+            setEthErr({
+              type: METAMASK_CONNECTION_FAILED,
+              message: 'Error while connecting to metamask',
+            });
           });
+          setConfirmConnect(false);
+          setShowWallet(true);
         }}
-        onHide={() => setWalletToggle(false)}
       />
       {!swap ? (
         <>
@@ -104,22 +121,21 @@ export default function Home() {
       <br />
       <br />
       <button
-        onClick={() => {
-          if (active) {
-            metaMask.resetState();
-          } else {
-            setWalletToggle(true);
-          }
-        }}
+        onClick={() => setConfirmConnect(true)}
+        disabled={ethErr.type === 'METAMASK_NOT_FOUND'}
       >
-        {active
-          ? 'Disconnect'
-          : activating
-          ? 'Connecting...'
-          : 'Check Wallet Details'}
+        {activating ? 'Connecting...' : 'Check Wallet Details'}
       </button>
-      {ethErr && ethErr}
-      <Accounts accounts={accounts} provider={provider} ENSNames={ENSNames} />
+      <br />
+      {ethErr.type && ethErr.message}
+
+      <WalletDetails
+        show={!!accounts?.length && showWallet}
+        onHide={() => setShowWallet(false)}
+        centered
+        accounts={accounts}
+        provider={provider}
+      />
     </div>
   );
 }
@@ -142,7 +158,10 @@ function Input(
   );
 }
 
-function Wallet(props: ModalProps) {
+function ConnectWallet({
+  onConfirm,
+  ...props
+}: ModalProps & { onConfirm: () => void }) {
   return (
     <Modal
       {...props}
@@ -155,7 +174,7 @@ function Wallet(props: ModalProps) {
         <p className='text-center'>Are you sure you want to connect ?</p>
       </Modal.Body>
       <Modal.Footer>
-        <Button onClick={props.onHide}>Connect</Button>
+        <Button onClick={onConfirm}>Connect</Button>
       </Modal.Footer>
     </Modal>
   );
@@ -188,18 +207,17 @@ function useBalances(
   return balances;
 }
 
-function Accounts({
+function Values({
   accounts,
   provider,
-  ENSNames,
 }: {
   accounts: ReturnType<Web3ReactHooks['useAccounts']>;
   provider: ReturnType<Web3ReactHooks['useProvider']>;
-  ENSNames: ReturnType<Web3ReactHooks['useENSNames']>;
 }) {
-  const balances = useBalances(provider, accounts);
   if (!accounts) return null;
+  const balances = useBalances(provider, accounts);
 
+  //useEffect to connect to eth here
   return (
     <div>
       <b>
@@ -214,13 +232,20 @@ function Accounts({
                   textOverflow: 'ellipsis',
                 }}
               >
-                {ENSNames?.[i] ?? account}
+                {account}
                 <br />
                 {balances && balances[i]
                   ? `Balance: (Ξ${formatEther(balances[i])})`
                   : null}
               </ul>
             ))}
+        <button
+          onClick={() => {
+            metaMask.resetState();
+          }}
+        >
+          Disconnect
+        </button>
       </b>
     </div>
   );
