@@ -8,4 +8,5 @@ export type EthErrorType = {
 };
 
 export type UseBalanceType = BigNumber[] | undefined;
+
 export type ProviderType = ReturnType<Web3ReactHooks['useProvider']>;

@@ -1,10 +1,10 @@
 import { ProviderType, UseBalanceType } from '@/types';
 import React from 'react';
 
-export function useBalances(
+export const useBalances = (
   provider: ProviderType,
   accounts: string[]
-): UseBalanceType {
+): UseBalanceType => {
   const [balances, setBalances] = React.useState<UseBalanceType>();
 
   React.useEffect(() => {
@@ -26,4 +26,4 @@ export function useBalances(
   }, [provider, accounts]);
 
   return balances;
-}
+};
