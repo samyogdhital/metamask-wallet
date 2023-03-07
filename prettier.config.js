@@ -9,10 +9,10 @@ module.exports = {
     '^(next/(.*)$)|^(next$)',
     '^(react/(.*)$)|^(react$)',
     '<THIRD_PARTY_MODULES>',
-    '^@/(.*)$|^/(.*)$',
-    '^@/lib/(.*)$',
-    '^@/styles/(.*)$',
     '^[./]',
+    '.*/globals.css.*',
+    '^@/components/(.*)$',
+    '^@/(?!styles)(.*)$|^/(.*)$',
   ],
   plugins: ['@trivago/prettier-plugin-sort-imports'],
 
