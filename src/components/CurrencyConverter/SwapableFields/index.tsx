@@ -25,24 +25,27 @@ const SwapableFields = () => {
             type="number"
             placeholder="NEP"
             label="NEP"
-            onChange={(e) => setNep(parseInt(e.target.value))}
+            onChange={(e) => setNep(+e.target.value)}
             value={checkInt(nep) ? nep : nep.toFixed(2)}
-            aria-describedby="nep input"
+            aria-describedby="nep-help-text"
             style={{
               marginBottom: '20px',
             }}
           />
-          <SwapIcon setSwap={setSwap} animate="animate" variants={varients} />
+          <SwapIcon
+            title="Swap currency"
+            setSwap={setSwap}
+            animate="animate"
+            variants={varients}
+          />
           <Input
             id="busd"
             type="number"
             placeholder="BUSD"
             label="BUSD"
             value={checkInt(busd) ? busd : busd.toFixed(2)}
-            onChange={(e) =>
-              setNep(parseInt(e.target.value) / CURRENCY_CONVERSION_RATE)
-            }
-            aria-describedby="busd input"
+            onChange={(e) => setNep(+e.target.value / CURRENCY_CONVERSION_RATE)}
+            aria-describedby="busd-help-text"
           />
         </>
       ) : (
@@ -53,15 +56,14 @@ const SwapableFields = () => {
             placeholder="BUSD"
             label="BUSD"
             value={checkInt(busd) ? busd : busd.toFixed(2)}
-            onChange={(e) =>
-              setNep(parseInt(e.target.value) / CURRENCY_CONVERSION_RATE)
-            }
-            aria-describedby="busd input"
+            onChange={(e) => setNep(+e.target.value / CURRENCY_CONVERSION_RATE)}
+            aria-describedby="busd-help-text"
             style={{
               marginBottom: '20px',
             }}
           />
           <SwapIcon
+            title="Swap currency"
             animate={{
               transform: 'scale(2)',
             }}
@@ -72,12 +74,18 @@ const SwapableFields = () => {
             type="number"
             placeholder="NEP"
             label="NEP"
-            onChange={(e) => setNep(parseInt(e.target.value))}
+            onChange={(e) => setNep(+e.target.value)}
             value={checkInt(nep) ? nep : nep.toFixed(2)}
-            aria-describedby="nep input"
+            aria-describedby="nep-help-text"
           />
         </>
       )}
+      <p id="nep-help-text" className="visually-hidden">
+        Enter NEP currency to convert
+      </p>
+      <p id="busd-help-text" className="visually-hidden">
+        Enter BUSD currency to convert
+      </p>
     </div>
   );
 };

@@ -78,6 +78,7 @@ const MetaMaskWallet = ({
           className="mt-5"
           onClick={() => setConfirmConnect(true)}
           disabled={ethErr.type === 'METAMASK_NOT_FOUND'}
+          aria-label="Check wallet details"
         >
           {activating ? 'Please wait 😀' : 'Check wallet details'}
         </Button>

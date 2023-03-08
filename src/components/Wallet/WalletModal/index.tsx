@@ -7,17 +7,13 @@ import { metaMask } from '@/utils/metamask';
 const WalletModal = (props: ModalProps) => {
   return (
     <Modal
-      className=" fadeIn"
+      className="fadeIn"
       dialogClassName="modal-90w"
-      aria-labelledby="example-custom-modal-styling-title"
+      aria-labelledby="wallet-modal-title"
       {...props}
     >
       <Modal.Header closeButton>
-        <Modal.Title
-          className="text-dark"
-          id="example-custom-modal-styling-title"
-          as="h5"
-        >
+        <Modal.Title className="text-dark" id="wallet-modal-title" as="h5">
           Wallet Details
         </Modal.Title>
       </Modal.Header>

@@ -16,7 +16,7 @@ const WalletDetails = ({ accounts, provider }: Props) => {
   if (!accounts) return null;
 
   return (
-    <div className="wallet-details">
+    <div className="wallet-details" aria-label="Wallet Details">
       {accounts.length &&
         accounts.map((account, i) => {
           const balance =
@@ -40,7 +40,7 @@ function DetailItem({ label, value }: { label: string; value: string | null }) {
   return (
     <div className="detail-item">
       <div>{label}</div>
-      <div>{value && value}</div>
+      <div aria-label={label}>{value && value}</div>
     </div>
   );
 }

@@ -22,7 +22,7 @@ const Home = () => {
   const showBlur = confirmConnect || (accounts?.length && showWallet);
 
   return (
-    <main className="vh-100 flex-center ">
+    <main className="vh-100 flex-center" aria-label="Home Page">
       <motion.div
         className="form-wrapper"
         animate={{
