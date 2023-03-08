@@ -34,7 +34,7 @@ const MetaMaskWallet = () => {
     if (accounts && accounts.length) {
       setEthErr({ type: null, message: null });
     }
-  }, [accounts?.length]);
+  }, [accounts]);
 
   const onConfirm = () => {
     metaMask.activate().catch(() => {
@@ -47,19 +47,27 @@ const MetaMaskWallet = () => {
     setShowWallet(true);
   };
 
+  const onHide = () => {
+    setShowWallet(false);
+    metaMask.resetState();
+  };
+
   return (
     <>
       <ConnectWallet
-        show={confirmConnect}
-        onHide={() => setConfirmConnect(false)}
         onConfirm={onConfirm}
+        onHide={() => setConfirmConnect(false)}
+        show={confirmConnect}
+        animation={false}
       />
       <WalletModal
-        show={!!accounts?.length && showWallet}
-        onHide={() => setShowWallet(false)}
-        centered
         accounts={accounts}
         provider={provider}
+        onHide={onHide}
+        show={!!accounts?.length && showWallet}
+        backdrop={false}
+        animation={false}
+        centered
       />
       <div
         style={{
