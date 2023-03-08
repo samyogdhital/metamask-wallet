@@ -48,7 +48,7 @@ const MetaMaskWallet = () => {
   };
 
   return (
-    <div>
+    <>
       <ConnectWallet
         show={confirmConnect}
         onHide={() => setConfirmConnect(false)}
@@ -61,14 +61,25 @@ const MetaMaskWallet = () => {
         accounts={accounts}
         provider={provider}
       />
-      <Button
-        onClick={() => setConfirmConnect(true)}
-        disabled={ethErr.type === 'METAMASK_NOT_FOUND'}
+      <div
+        style={{
+          width: '100%',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
       >
-        {activating ? <Spinner /> : 'Check Wallet Details'}
-      </Button>
+        <Button
+          className="mt-5 m-0"
+          onClick={() => setConfirmConnect(true)}
+          disabled={ethErr.type === 'METAMASK_NOT_FOUND'}
+        >
+          {activating ? 'Please Wait 😀' : 'Check wallet details'}
+        </Button>
+      </div>
+
       <div>{ethErr.type && ethErr.message}</div>
-    </div>
+    </>
   );
 };
 export default MetaMaskWallet;

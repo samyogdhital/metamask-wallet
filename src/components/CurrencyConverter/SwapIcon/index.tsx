@@ -9,11 +9,13 @@ const SwapIcon = ({
 }) => {
   return (
     <motion.div
-      className="d-flex justify-content-center align-items-center pointer"
-      onClick={() => setSwap((pre) => !pre)}
+      className="d-flex justify-content-center align-items-center"
       {...motionProps}
     >
-      <AiOutlineSwap />
+      <AiOutlineSwap
+        className="pointer"
+        onClick={() => setSwap((pre) => !pre)}
+      />
     </motion.div>
   );
 };
