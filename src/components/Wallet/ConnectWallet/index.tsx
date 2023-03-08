@@ -12,9 +12,13 @@ const ConnectWallet = ({ onConfirm, ...props }: Props) => {
       aria-labelledby="contained-modal-title-vcenter"
       centered
     >
-      <Modal.Body className="text-danger">
-        <h4 className="text-center">Connect to MetaMask</h4>
-        <p className="text-center">Are you sure you want to connect ?</p>
+      <Modal.Header className="text-dark">
+        <h4 className="text-center m-auto">Connect to MetaMask</h4>
+      </Modal.Header>
+      <Modal.Body className="text-dark">
+        <p className="text-center">
+          Are you sure you want to connect to MetaMask ?
+        </p>
       </Modal.Body>
       <Modal.Footer>
         <Button onClick={onConfirm}>Connect</Button>

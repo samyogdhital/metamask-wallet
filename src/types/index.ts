@@ -10,3 +10,10 @@ export type EthErrorType = {
 export type UseBalanceType = BigNumber[] | undefined;
 
 export type ProviderType = ReturnType<Web3ReactHooks['useProvider']>;
+
+export type MetaMaskWalletProps = {
+  showWallet: boolean;
+  confirmConnect: boolean;
+  setShowWallet: React.Dispatch<React.SetStateAction<boolean>>;
+  setConfirmConnect: React.Dispatch<React.SetStateAction<boolean>>;
+};

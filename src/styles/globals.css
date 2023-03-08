@@ -1,6 +1,6 @@
 body {
   color: white;
-  background-color: #1a1824;
+  background-color: #967aa1;
   box-sizing: border-box;
   overflow: hidden;
 }
@@ -19,4 +19,62 @@ input[type='number'] {
 
 .pointer {
   cursor: pointer;
+}
+
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.form-wrapper {
+  background: #192a51;
+  padding: 150px;
+  padding-top: 80px;
+  border-radius: 10px;
+  box-shadow: #000000d1 8px 7px 13px 0px;
+}
+
+.button-wrapper {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.wallet-details {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+.detail-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 5px;
+}
+
+.error {
+  color: red;
+  top: 15px;
+  font-size: 15px;
+  position: absolute;
+}
+
+.animate-scale {
+  width: 100px;
+  height: 100px;
+  animation: scaling-animation 1s infinite alternate;
+}
+
+@keyframes scaling-animation {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.2);
+  }
 }

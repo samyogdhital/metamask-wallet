@@ -1,21 +1,23 @@
 import React from 'react';
 import Button from 'react-bootstrap/Button';
-import Spinner from 'react-bootstrap/Spinner';
 import ConnectWallet from '@/components/Wallet/ConnectWallet';
 import WalletModal from '@/components/Wallet/WalletModal';
 import { METAMASK_CONNECTION_FAILED, METAMASK_NOT_FOUND } from '@/constants';
-import { EthErrorType } from '@/types';
+import { EthErrorType, MetaMaskWalletProps } from '@/types';
 import { hooks, metaMask } from '@/utils/metamask';
 
-const MetaMaskWallet = () => {
-  const [showWallet, setShowWallet] = React.useState<boolean>(false);
-  const [confirmConnect, setConfirmConnect] = React.useState<boolean>(false);
+const MetaMaskWallet = ({
+  showWallet,
+  setShowWallet,
+  confirmConnect,
+  setConfirmConnect,
+}: MetaMaskWalletProps) => {
   const [ethErr, setEthErr] = React.useState<EthErrorType>({
     type: null,
     message: null,
   });
 
-  const { useAccounts, useProvider, useIsActivating, useIsActive } = hooks;
+  const { useAccounts, useProvider, useIsActivating } = hooks;
 
   const accounts = useAccounts();
   const provider = useProvider();
@@ -40,8 +42,9 @@ const MetaMaskWallet = () => {
     metaMask.activate().catch(() => {
       setEthErr({
         type: METAMASK_CONNECTION_FAILED,
-        message: 'Error while connecting to metamask',
+        message: 'Error connecting to metamask',
       });
+      setShowWallet(false);
     });
     setConfirmConnect(false);
     setShowWallet(true);
@@ -69,24 +72,16 @@ const MetaMaskWallet = () => {
         animation={false}
         centered
       />
-      <div
-        style={{
-          width: '100%',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
+      <div className="button-wrapper">
+        <div className="error">{ethErr.type && ethErr.message}</div>
         <Button
-          className="mt-5 m-0"
+          className="mt-5"
           onClick={() => setConfirmConnect(true)}
           disabled={ethErr.type === 'METAMASK_NOT_FOUND'}
         >
-          {activating ? 'Please Wait 😀' : 'Check wallet details'}
+          {activating ? 'Please wait 😀' : 'Check wallet details'}
         </Button>
       </div>
-
-      <div>{ethErr.type && ethErr.message}</div>
     </>
   );
 };

@@ -16,14 +16,7 @@ const WalletDetails = ({ accounts, provider }: Props) => {
   if (!accounts) return null;
 
   return (
-    <div
-      style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        flexDirection: 'column',
-      }}
-    >
+    <div className="wallet-details">
       {accounts.length &&
         accounts.map((account, i) => {
           const balance =
@@ -45,15 +38,7 @@ export default WalletDetails;
 
 function DetailItem({ label, value }: { label: string; value: string | null }) {
   return (
-    <div
-      style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        width: '100%',
-        marginBottom: '5px',
-      }}
-    >
+    <div className="detail-item">
       <div>{label}</div>
       <div>{value && value}</div>
     </div>
